@@ -120,6 +120,9 @@ riskSetMatch <- function(ptid,
     ## selected.controls <- do.call(rbind,foreach::foreach(controls=split.work.data,.packages=c("heaven")) %dopar% {
     selected.controls <- do.call(rbind,foreach::foreach(sub=1:length(split.work.data),.packages=c("heaven","data.table")) %dopar% {
         controls=split.work.data[[sub]]
+        # These lines force controls to remain event-free → OR shifts toward null
+        isControl <- controls[[event]] == 0
+        controls <- controls[isControl]
         ## find lengths of controls and cases
         Tcontrols<-NROW(controls)
         ## Setnames because data.table called from function
